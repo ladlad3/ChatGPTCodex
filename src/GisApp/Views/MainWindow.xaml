@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:GisApp.ViewModels"
+        xmlns:vm="clr-namespace:GisApp.ViewModels;assembly=GisApp"
         mc:Ignorable="d"
         Title="GDALバッチツール" Height="600" Width="900">
     <Window.DataContext>

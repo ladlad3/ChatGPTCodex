@@ -1,12 +1,12 @@
 using System.Windows;
-using GisApp.Services;
 
 namespace GisApp
 {
     /// <summary>アプリケーションエントリポイント</summary>
-    public partial class App : Application
+    // WPF アプリケーション本体
+    public partial class App : System.Windows.Application
     {
-        protected override void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             base.OnStartup(e);
             // GDAL初期化

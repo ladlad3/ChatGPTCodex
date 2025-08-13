@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
@@ -9,8 +9,8 @@
     <Platforms>x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MaxRev.Gdal.Core" Version="3.8.0" />
-    <PackageReference Include="MaxRev.Gdal.WindowsRuntime.Minimal" Version="3.8.0" />
+    <PackageReference Include="MaxRev.Gdal.Core" Version="3.8.3.286" />
+    <PackageReference Include="MaxRev.Gdal.WindowsRuntime.Minimal" Version="3.8.3.259" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     <PackageReference Include="CsvHelper" Version="30.0.1" />
   </ItemGroup>
