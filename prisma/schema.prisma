@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id               Int       @id @default(autoincrement())
+  projectId        String    @unique @map("project_id")
+  projectName      String    @map("project_name")
+  client           String?
+  status           ProjectStatus @default(PLANNED)
+  pm               String?
+  startDate        DateTime? @map("start_date")
+  endDate          DateTime? @map("end_date")
+  plannedEffortH   Float     @map("planned_effort_h")
+  coeff            Float?
+  adjustedEffortH  Float     @map("adjusted_effort_h")
+  priority         Int?
+  tags             String?
+  note             String?
+  monthlyPlans     MonthlyPlan[]
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+}
+
+enum ProjectStatus {
+  PLANNED
+  IN_PROGRESS
+  ON_HOLD
+  COMPLETED
+}
+
+model MonthlyPlan {
+  id              Int       @id @default(autoincrement())
+  date            DateTime
+  weekStart       DateTime  @map("week_start")
+  project         Project   @relation(fields: [projectId], references: [id])
+  projectId       Int       @map("project_id")
+  taskName        String    @map("task_name")
+  assignee        String
+  process         ProcessMaster @relation(fields: [processCode], references: [processCode])
+  processCode     String    @map("process_code")
+  plannedH        Float     @map("planned_h")
+  coeff           Float
+  adjustedH       Float     @map("adjusted_h")
+  note            String?
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+}
+
+model Resource {
+  id                     Int      @id @default(autoincrement())
+  assignee               String   @unique
+  role                   String?
+  baseCapacityHPerMonth  Float    @map("base_capacity_h_per_month")
+  holidayHours           Float    @map("holiday_hours")
+  availabilityH          Float    @map("availability_h")
+  allocatedH             Float    @map("allocated_h")
+  utilization            Float
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+}
+
+model ProcessMaster {
+  processCode   String   @id @map("process_code")
+  processName   String   @map("process_name")
+  defaultCoeff  Float    @map("default_coeff")
+  description   String?
+  monthlyPlans  MonthlyPlan[]
+  miscTasks     MiscTask[]
+}
+
+model MiscTask {
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  taskId      String   @unique @map("task_id")
+  taskName    String   @map("task_name")
+  assignee    String
+  category    String
+  plannedH    Float    @map("planned_h")
+  coeff       Float
+  adjustedH   Float    @map("adjusted_h")
+  note        String?
+  process     ProcessMaster? @relation(fields: [processCode], references: [processCode])
+  processCode String?   @map("process_code")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+}
+
+model Setting {
+  key         String @id
+  value       String
+  description String?
+}
+
+model Holiday {
+  id    Int      @id @default(autoincrement())
+  date  DateTime @unique
+  name  String
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  author    String
+  note      String
+  createdAt DateTime @default(now()) @map("created_at")
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  entity    String
+  entityId  String   @map("entity_id")
+  action    String
+  user      String
+  timestamp DateTime @default(now())
+  diffJson  String?  @map("diff_json")
+}
+
+datasource shadow {
+  provider = "sqlite"
+  url      = env("SHADOW_DATABASE_URL")
+}
